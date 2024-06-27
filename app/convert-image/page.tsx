@@ -1,13 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import React from "react";
 
 const availableFormats = ["png", "jpg", "jpeg", "webp", "gif", "bmp"];
 
 const page = () => {
-  const pathname = usePathname();
 
   return (
     <div className="mt-6">
@@ -20,7 +18,7 @@ const page = () => {
         {availableFormats.map((fmt) => (
           <Link
             key={fmt}
-            href={`/convert-image/${pathname.split("/").slice(0, -1).join("/")}/${fmt}`}
+            href={`/convert-image/${fmt}`}
           >
             <Button className="min-w-[180px]">
               Convert to {fmt.toUpperCase()}
