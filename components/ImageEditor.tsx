@@ -56,6 +56,7 @@ const ImageEditor: React.FC = () => {
   };
 
   const handleDownload = () => {
+    if(!image) return 
     if (canvasRef.current) {
       canvasRef.current.toBlob((blob) => {
         if (blob) {
@@ -125,6 +126,7 @@ const ImageEditor: React.FC = () => {
     <div className="flex justify-between w-full gap-3">
       <div>
         <ImageUpload onImageUpload={handleImageUpload} />
+        <hr />
         <div className="p-2 bg-card/80 border-card rounded-sm">
           Setting:{" "}
           <div>
@@ -151,7 +153,7 @@ const ImageEditor: React.FC = () => {
         <div className="w-full h-9">Image Preview</div>
         <div className="relative">
           <canvas ref={canvasRef} />
-          {!setting.entireImage && (
+          {!setting.entireImage && image && (
             <div
               ref={blurBoxRef}
               className="absolute border border-dashed border-black"
@@ -170,6 +172,13 @@ const ImageEditor: React.FC = () => {
               />
             </div>
           )}
+          {
+            !image && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                Upload an image to start editing
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
