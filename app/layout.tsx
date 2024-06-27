@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import Header from "@/components/Header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -23,18 +24,19 @@ export default function RootLayout({
     <html lang="en">
       <Analytics />
       <body
-        // From #E3D1FB then  #FDD2E4 then #FFDEE1 then #FFFCF8 then #FFFFFF
         className={cn(
           "min-h-screen bg-background font-mono antialiased",
           fontSans.variable
         )}
         style={{
-          // Inline style for the gradient
           background:
             "linear-gradient(30deg, #E3D1FB, #E3D1FB, #E3D1FB, #FDD2E4, #FFDEE1, #FFFCF8, #FFFFFF)",
         }}
       >
-        {children}
+        <Header />
+        <main className="flex min-h-screen flex-col items-center justify-start lg:p-24 ">
+          {children}
+        </main>
       </body>
     </html>
   );

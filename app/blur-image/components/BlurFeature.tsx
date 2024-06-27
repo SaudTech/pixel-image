@@ -1,16 +1,16 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "./ui/button";
-import ImageUpload from "./ImageUpload";
-import SettingField from "./SettingField";
+import { Button } from "../../../components/ui/button";
+import ImageUpload from "../../../components/ImageUpload";
+import SettingField from "../../../components/SettingField";
 
 interface SettingInfo {
   intensity: number;
   entireImage: boolean;
 }
 
-const ImageEditor: React.FC = () => {
+const BlurFeature: React.FC = () => {
   const [setting, setSetting] = useState<SettingInfo>({
     intensity: 2,
     entireImage: false,
@@ -56,7 +56,7 @@ const ImageEditor: React.FC = () => {
   };
 
   const handleDownload = () => {
-    if(!image) return 
+    if (!image) return;
     if (canvasRef.current) {
       canvasRef.current.toBlob((blob) => {
         if (blob) {
@@ -123,12 +123,12 @@ const ImageEditor: React.FC = () => {
   }, [image, setting.intensity, setting.entireImage, blurBox]);
 
   return (
-    <div className="flex justify-between w-full gap-3">
-      <div>
+    <div className="flex flex-col md:flex-row justify-between w-full gap-3 p-4">
+      <div className="w-full md:w-1/4">
         <ImageUpload onImageUpload={handleImageUpload} />
-        <hr />
-        <div className="p-2 bg-card/80 border-card rounded-sm">
-          Setting:{" "}
+        <hr className="my-4 border-gray-300" />
+        <div className="p-4 bg-white border border-gray-300 rounded-md shadow-sm">
+          <h3 className="mb-4 font-semibold text-lg">Settings</h3>
           <div>
             <SettingField
               label="Intensity"
@@ -142,18 +142,26 @@ const ImageEditor: React.FC = () => {
                 setSetting((prev) => ({ ...prev, entireImage: checked }))
               }
             />
+            <Button
+              onClick={handleDownload}
+              className="w-full mt-4 rounded-md bg-blue-500 text-white"
+            >
+              Download Image
+            </Button>
           </div>
         </div>
-        <Button onClick={handleDownload} className="p-2 w-full mt-3 rounded-sm">
-          Download Image
-        </Button>
       </div>
 
-      <div className="bg-card rounded-md p-2 w-3/4 relative">
-        <div className="w-full h-9">Image Preview</div>
-        <div className="relative">
-          <canvas ref={canvasRef} />
-          {!setting.entireImage && image && (
+      <div className="relative w-full md:w-3/4 bg-white border border-gray-300 rounded-md shadow-sm">
+        <div className="w-full h-9 bg-gray-100 flex items-center justify-center border-b border-gray-300">
+          Image Preview
+        </div>
+        {!setting.entireImage && image && (
+          <div className="relative text-center">
+            <canvas
+              ref={canvasRef}
+              className="border-black border border-solid"
+            />
             <div
               ref={blurBoxRef}
               className="absolute border border-dashed border-black"
@@ -171,18 +179,16 @@ const ImageEditor: React.FC = () => {
                 onMouseDown={(e) => handleBlurBoxMouseDown(e, "resize")}
               />
             </div>
-          )}
-          {
-            !image && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                Upload an image to start editing
-              </div>
-            )
-          }
-        </div>
+          </div>
+        )}
+        {!image && (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+            Upload an image to start editing
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ImageEditor;
+export default BlurFeature;
